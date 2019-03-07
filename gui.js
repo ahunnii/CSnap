@@ -4199,7 +4199,7 @@ IDE_Morph.prototype.exportProject = function (name, plain) {
 
 /**
  * Testing out STL exportation
- *
+ * function below adds the capability to export scene to an stl file
  */
 IDE_Morph.prototype.exportProjectAsSTL = function () {
     let menu;
