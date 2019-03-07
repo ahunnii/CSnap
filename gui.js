@@ -2602,6 +2602,7 @@ IDE_Morph.prototype.settingsMenu = function () {
     );
     menu.popup(world, pos);
 };
+
 IDE_Morph.prototype.projectMenu = function () {
     var menu,
         myself = this,
@@ -2613,7 +2614,9 @@ IDE_Morph.prototype.projectMenu = function () {
 
     menu = new MenuMorph(this);
     menu.addItem('Project notes...', 'editProjectNotes');
+
     menu.addLine();
+
     menu.addItem(
         'New',
         function () {
@@ -2653,7 +2656,31 @@ IDE_Morph.prototype.projectMenu = function () {
         );
     }
     menu.addItem('Save As...', 'saveProjectsBrowser');
+
+    // Button to save project as STL for 3D printing
+    menu.addItem('Export as STL',
+        function (){
+            console.log("Exporting project as STL for 3D printing");
+            // Below we call our costume function and pass in the name of the project
+            console.log("my project name is " + myself.projectName);
+            try {
+                this.exportProjectAsSTL();
+            } catch (e) {
+                console.log("Error trying to export file was " + e);
+            }
+    });
+
+    //
+
+    // Button to start and end collaboration using togetherjs
+    menu.addItem('Collaboration',
+        function () {
+            console.log("Starting collaboration");
+            TogetherJS(this); return false;
+        });
+    //
     menu.addLine();
+
     menu.addItem(
         'Import...',
         function () {
@@ -2720,7 +2747,7 @@ IDE_Morph.prototype.projectMenu = function () {
         function () {
             myself.droppedText(
                 myself.getURL(
-                    'http://community.csdt.rpi.edu/csnapsource/tools.xml'
+                    'https://community.csdt.rpi.edu/csnapsource/tools.xml'
                 ),
                 'tools'
             );
@@ -2732,11 +2759,11 @@ IDE_Morph.prototype.projectMenu = function () {
         function () {
             // read a list of libraries from an external file,
             var libMenu = new MenuMorph(this, 'Import library'),
-                libUrl = 'http://community.csdt.rpi.edu/csnapsource/libraries/' +
+                libUrl = 'https://community.csdt.rpi.edu/csnapsource/libraries/' +
                     'LIBRARIES';
 
             function loadLib(name) {
-                var url = 'http://community.csdt.rpi.edu/csnapsource/libraries/'
+                var url = 'https://community.csdt.rpi.edu/csnapsource/libraries/'
                         + name
                         + '.xml';
                 myself.droppedText(myself.getURL(url), name);
@@ -2772,16 +2799,26 @@ IDE_Morph.prototype.projectMenu = function () {
         menu.addItem(
             '2D ' + localize(graphicsName) + '...',
             function () {
-                var dir = graphicsName,
-                names = myself.getCostumesList(dir),
+
+                let directory = config.asset_path + graphicsName,
+
+                names = myself.getCostumesList(directory+'/costumes.html'), // Passing in a url or in this
+                    // a path to the getCostumesList function returns
+                    // an array of images gathered from a html page using a regular expression to filter out the name from
+                    // from the <a href attribute>
+                    // i.e alonzo etc, whatever url you pass into here, this method will make a get request
+
+
                 libMenu = new MenuMorph(
                     myself,
                     localize('Import') + ' ' + '2D ' + localize(graphicsName)
                 );
 
+
                 function loadCostume(name) {
-                    var url = dir + '/' + name,
+                    var url = directory + '/' + name,
                     img = new Image();
+
                     img.onload = function () {
                         var canvas = newCanvas(new Point(img.width, img.height));
                         canvas.getContext('2d').drawImage(img, 0, 0);
@@ -2938,10 +2975,11 @@ IDE_Morph.prototype.projectMenu = function () {
 };
 
 IDE_Morph.prototype.getCostumesList = function (dirname) {
-    var dir,
-        costumes = [];
+    var dir, costumes = [];
 
     dir = this.getURL(dirname);
+
+
     dir.split('\n').forEach(
         function (line) {
             var startIdx = line.search(new RegExp('href="[^./?].*"', 'i')),
@@ -2959,11 +2997,15 @@ IDE_Morph.prototype.getCostumesList = function (dirname) {
     costumes.sort(function (x, y) {
         return x < y ? -1 : 1;
     });
+
     return costumes;
 };
 
 IDE_Morph.prototype.getTexturesList =
     IDE_Morph.prototype.getCostumesList;
+
+
+
 
 // IDE_Morph menu actions
 
@@ -4154,6 +4196,36 @@ IDE_Morph.prototype.exportProject = function (name, plain) {
     }
 };
 
+
+/**
+ * Testing out STL exportation
+ * function below adds the capability to export scene to an stl file
+ */
+IDE_Morph.prototype.exportProjectAsSTL = function () {
+    let menu;
+    // Testing to see what world is
+    console.log(world);
+    try {
+                menu = this.showMessage('Exporting as STL');
+                let scene = copy(this.stage.scene);
+                // console.log("Scene is: " + scene);
+
+                let exporter = new THREE.STLExporter();
+                // console.log("Exporter: " + exporter);
+
+                let exportedScene = exporter.parse(scene);
+                let blob = new Blob( [exportedScene], { type: 'text/plain'});
+                saveAs(blob, (this.projectName ? this.projectName : '3DCSDT') + '.stl');
+
+                menu.destroy();
+                this.showMessage('Exported!', 1);
+    } catch (err) {
+                this.showMessage('Export failed: ' + err);
+                console.log(err)
+    }
+};
+
+
 IDE_Morph.prototype.saveFileAs = function (
     contents,
     fileType,
@@ -4161,7 +4233,7 @@ IDE_Morph.prototype.saveFileAs = function (
     newWindow // (optional) defaults to false.
 ) {
     /** Allow for downloading a file to a disk or open in a new tab.
-        This relies the FileSaver.js library which exports saveAs()
+        This relies on the FileSaver.js library which exports saveAs()
         Two utility methods saveImageAs and saveXMLAs should be used first.
         1. Opening a new window uses standard URI encoding.
         2. downloading a file uses Blobs.
@@ -4451,6 +4523,7 @@ IDE_Morph.prototype.setCloudURL = function () {
 // IDE_Morph synchronous Http data fetching
 
 IDE_Morph.prototype.getURL = function (url) {
+
     var request = new XMLHttpRequest(),
         myself = this;
     try {
@@ -4462,6 +4535,7 @@ IDE_Morph.prototype.getURL = function (url) {
         throw new Error('unable to retrieve ' + url);
     } catch (err) {
         myself.showMessage(err);
+        console.log(err);
         return;
     }
 };
