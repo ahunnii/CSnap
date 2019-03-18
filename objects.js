@@ -2008,6 +2008,8 @@ SpriteMorph.prototype.blockTemplates = function (category) {
             blocks.push(block('renderSphere'));
             blocks.push(block('renderBox'));
             blocks.push(block('renderArc'));
+            // Added by Chinedu 03/18/2019
+            blocks.push(block('icosahedron'));
             blocks.push(block('renderCylinder'));
             blocks.push(block('renderTorusKnot'));
             blocks.push(block('renderText'));
