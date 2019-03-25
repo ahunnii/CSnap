@@ -622,17 +622,6 @@ SpriteMorph.prototype.initBlocks = function () {
             spec: 'set border color to %n',
             defaults: [0]
         },
-        /////////////////////////////////
-        // For testing purposes of our icosahedron shape
-        icosahedron: {
-            type: 'command',
-            category: 'pen',
-            "spec": "radius of icosahedron: %n",
-            "defaults": [5]
-        },
-        // End of testing for icosahedron
-        /////////////////////////////////////
-
 		//add Border Shade functionality - Get, Set, and Change
 		getBorderShade: {
 			type: "reporter",
@@ -2011,10 +2000,6 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         blocks.push(block('doStamp'));
         blocks.push(block('smoothBorders'));
 
-        // following line is for debugging
-        blocks.push(block('icosahedron'));
-        // for debugging to see if block will be added to ide
-
         if (this.costume && this.costume.is3D) {
             blocks.push(block('clear'));
             blocks.push('-');
@@ -2024,8 +2009,6 @@ SpriteMorph.prototype.blockTemplates = function (category) {
             blocks.push(block('renderSphere'));
             blocks.push(block('renderBox'));
             blocks.push(block('renderArc'));
-            // Added by Chinedu 03/18/2019
-            blocks.push(block('icosahedron'));
             blocks.push(block('renderCylinder'));
             blocks.push(block('renderTorusKnot'));
             blocks.push(block('renderText'));
@@ -3287,16 +3270,6 @@ SpriteMorph.prototype.renderSphere = function (radius) {
 
 SpriteMorph.prototype.renderBox = function (width, height, depth) {
     this.render3dShape(new THREE.BoxGeometry(width, height, depth));
-};
-
-/**
- * Let's try defining the functionality of our custom new block icosahedron
- */
-SpriteMorph.prototype.icosahedron = function(radius){
-    // we'll add custom code soon for now lets just add a generic shape
-    this.render3dShape(new THREE.IcosahedronGeometry(radius, 0));
-    console.log("we dragged in our icosahedron block from CSnap objects.js");
-    console.log(radius + " is the radius");
 };
 
 SpriteMorph.prototype.renderArc = function (width, height) {
