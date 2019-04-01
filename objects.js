@@ -1999,6 +1999,7 @@ SpriteMorph.prototype.blockTemplates = function (category) {
         blocks.push('-');
         blocks.push(block('doStamp'));
         blocks.push(block('smoothBorders'));
+
         if (this.costume && this.costume.is3D) {
             blocks.push(block('clear'));
             blocks.push('-');
@@ -3261,15 +3262,15 @@ SpriteMorph.prototype.render3dShape = function (geometry, centering) {
     else {
         this.parent.hiddenObjects.add(object);
     }
-}
+};
 
 SpriteMorph.prototype.renderSphere = function (radius) {
     this.render3dShape(new THREE.SphereGeometry(radius, 32, 32));
-}
+};
 
 SpriteMorph.prototype.renderBox = function (width, height, depth) {
     this.render3dShape(new THREE.BoxGeometry(width, height, depth));
-}
+};
 
 SpriteMorph.prototype.renderArc = function (width, height) {
     const THREEJS_ARC_SEGMENTS = 60,
@@ -3292,7 +3293,7 @@ SpriteMorph.prototype.renderArc = function (width, height) {
                                       THREEJS_TUBE_RADIUS_SEGMENTS,
                                       false);   // closed or not
     this.render3dShape(geometry, false);
-}
+};
 
 SpriteMorph.prototype.renderCylinder = function (top, bottom, height) {
     const THREEJS_CYLINDER_RADIUS_SEGMENTS = 90;
