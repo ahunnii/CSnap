@@ -291,7 +291,7 @@ IDE_Morph.prototype.openIn = function (world) {
             }
             throw new Error('unable to retrieve ' + url);
         } catch (err) {
-            return;
+
         }
     }
 
@@ -329,7 +329,7 @@ IDE_Morph.prototype.openIn = function (world) {
             }
             world.children[0].openProjectString(src);
         }
-    }
+    };
 
     if(config.modules !== undefined && config.modules.module !== undefined ) {
         var mdl = new ModuleLoader(myself);
@@ -434,7 +434,7 @@ IDE_Morph.prototype.openIn = function (world) {
             };
             xhr.onerror = function() {
                 console.log("Error!");
-            }
+            };
 
             xhr.send();
         }
@@ -519,7 +519,7 @@ IDE_Morph.prototype.precacheGoals = function() {
     }
 
     return true;
-}
+};
 
 IDE_Morph.prototype.createControlBar = function () {
     // assumes the logo has already been created
@@ -1498,7 +1498,7 @@ IDE_Morph.prototype.createCorralBar = function () {
         this.corralBar.left() + padding + (newbutton.width() + padding)*2
     );
 
-    this.corralBar.add(xlabel)
+    this.corralBar.add(xlabel);
 
     ylabel = new StringMorph(
             "Y: 0",
@@ -1516,7 +1516,7 @@ IDE_Morph.prototype.createCorralBar = function () {
         this.corralBar.left() + padding + (newbutton.width() + padding)*2 + 100
     );
 
-    this.corralBar.add(ylabel)
+    this.corralBar.add(ylabel);
 
     this.corralBar.step = function() {
       this.parent.updateCorralBar();
@@ -2679,6 +2679,17 @@ IDE_Morph.prototype.projectMenu = function () {
     //         TogetherJS(this); return false;
     //     });
     // //
+
+
+    menu.addItem(
+        'Export 2D as 3D STL',
+        function () {
+            console.log('Export 2D as STL menu option was clicked');
+            let myselfToPassToOurFunction = myself;
+            extruding2D(myselfToPassToOurFunction);
+        }
+    );
+
     menu.addLine();
 
     menu.addItem(
@@ -3018,7 +3029,7 @@ IDE_Morph.prototype.aboutCSnap = function () {
     aboutTxt = 'CSnap 1.0\nCSDTs with Snap!\n\n'
         + 'Culturally Situated Design Tools (CSDTs) were developed at RPI with support from the\n'
         + 'National Science Foundation. In 2014 the Java versions were ported to the Snap!\n'
-        + 'codebase created by Jens Mönig, which is based on the Scratch interface'
+        + 'codebase created by Jens Mönig, which is based on the Scratch interface';
 
     noticeTxt = localize('License')
         + '\n\n'
@@ -4536,7 +4547,7 @@ IDE_Morph.prototype.getURL = function (url) {
     } catch (err) {
         myself.showMessage(err);
         console.log(err);
-        return;
+
     }
 };
 
@@ -5232,7 +5243,7 @@ ProjectDialogMorph.prototype.getGoalProjectList = function () {
 	for (var i = 0; i < JSON_object.length; i++){
 		//preload images
 		thumbnail = new Image();
-		thumbnail.src = JSON_object[i].thumb_url
+		thumbnail.src = JSON_object[i].thumb_url;
 		dta = {
 			name: JSON_object[i].name,
 			img: JSON_object[i].img_url,
@@ -5248,7 +5259,7 @@ ProjectDialogMorph.prototype.getGoalProjectList = function () {
     for (var i = 0; i < JSON_object.length; i++){
         //preload images
         thumbnail = new Image();
-        thumbnail.src = JSON_object[i].thumb_url
+        thumbnail.src = JSON_object[i].thumb_url;
         dta = {
             name: JSON_object[i].name,
             img: JSON_object[i].img_url,
@@ -7059,3 +7070,26 @@ ProjectDialogMorph.prototype.fixClassRoomItemColors = function () {
         item.noticesTransparentClick = true;
     });
 };
+
+function doActualExtrusionOfImage(pathToImgWeWantToExtrude) {
+    console.log("inside the extrusion function");
+    console.log(pathToImgWeWantToExtrude);
+
+}
+
+function extruding2D(myself) {
+    // console.log(myself);    // this is the IDE Morph
+    // console.log(this);  // this is the Window Object
+    let stage = myself.stage;   // this is the stage
+    let childrenOfStage = stage.children;    // this should be an array of the all children of our stage
+    // console.log(childrenOfStage);
+    // console.log(typeof childrenOfStage);
+    // console.log(childrenOfStage[0]);
+    // console.log(childrenOfStage[0].costume);
+    // console.log(childrenOfStage[0].costume.url);
+        let urlOfImage = childrenOfStage[0].costume.url;    // this is the url, i.e path to our image on the stage
+        console.log(urlOfImage);
+        let pathToImgWeWantToExtrude = new Image(); // here we create an image
+    pathToImgWeWantToExtrude.src = urlOfImage; // we set the source of the image to the url above if its not null
+    doActualExtrusionOfImage(pathToImgWeWantToExtrude); // we pass the image to the function that does the extrusion
+}
