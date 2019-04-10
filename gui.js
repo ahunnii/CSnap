@@ -7109,6 +7109,14 @@ function doActualExtrusionOfImage(pathToImgWeWantToExtrude, x, y) {
     console.log(myNewImage.width);
     console.log(myNewImage.height);
 
+    let a = document.createElement('a');
+    a.href = myNewImage.src;
+    a.download = "image.png";
+    console.log(a);
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+
 }
 
 function extruding2D(myself) {
