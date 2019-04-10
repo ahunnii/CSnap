@@ -7109,6 +7109,7 @@ function doActualExtrusionOfImage(pathToImgWeWantToExtrude, x, y) {
     console.log(myNewImage.width);
     console.log(myNewImage.height);
 
+    // We are creating a temp a tag to hold the image above which we created from our temp canvas above
     let a = document.createElement('a');
     a.href = myNewImage.src;
     a.download = "image.png";
