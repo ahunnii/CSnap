@@ -7071,9 +7071,43 @@ ProjectDialogMorph.prototype.fixClassRoomItemColors = function () {
     });
 };
 
-function doActualExtrusionOfImage(pathToImgWeWantToExtrude) {
+
+function doActualExtrusionOfImage(pathToImgWeWantToExtrude, x, y) {
     console.log("inside the extrusion function");
     console.log(pathToImgWeWantToExtrude);
+    console.log("now let's log the height and width of the image");
+    console.log(pathToImgWeWantToExtrude.width);
+    console.log(pathToImgWeWantToExtrude.height);
+
+    // temporary canvas to hold the image and retrieve its data
+    let tempCanvasToGetImageData = document.createElement('canvas');
+    let ctx = tempCanvasToGetImageData.getContext("2d");
+    tempCanvasToGetImageData.width = pathToImgWeWantToExtrude.width;
+    tempCanvasToGetImageData.height = pathToImgWeWantToExtrude.height;
+    ctx.drawImage(pathToImgWeWantToExtrude, 0, 0);  // this should draw the image with its intrinsic size
+
+    let myImageData = ctx.getImageData(x, y, pathToImgWeWantToExtrude.width, pathToImgWeWantToExtrude.height);
+    console.log(myImageData);
+
+    console.log("my image data data is: ");
+    console.log(myImageData.data);
+    console.log(myImageData.width);
+    console.log(myImageData.height);
+
+    for (let i=0;i<myImageData.data.length;i+=4) {
+        let avg = (myImageData.data[i]+myImageData.data[i+1]+myImageData.data[i+2])/3;
+        myImageData.data[i] = avg;
+        myImageData.data[i+1] = avg;
+        myImageData.data[i+2] = avg;
+    }
+
+    ctx.putImageData(myImageData, 0, 0, 0, 0, myImageData.width, myImageData.height);
+
+    let myNewImage = new Image();
+    myNewImage.src = tempCanvasToGetImageData.toDataURL("image/png");
+    console.log(myNewImage);
+    console.log(myNewImage.width);
+    console.log(myNewImage.height);
 
 }
 
@@ -7091,5 +7125,5 @@ function extruding2D(myself) {
         console.log(urlOfImage);
         let pathToImgWeWantToExtrude = new Image(); // here we create an image
     pathToImgWeWantToExtrude.src = urlOfImage; // we set the source of the image to the url above if its not null
-    doActualExtrusionOfImage(pathToImgWeWantToExtrude); // we pass the image to the function that does the extrusion
+    doActualExtrusionOfImage(pathToImgWeWantToExtrude, 0, 0); // we pass the image to the function that does the extrusion
 }
