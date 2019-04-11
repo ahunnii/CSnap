@@ -7072,6 +7072,8 @@ ProjectDialogMorph.prototype.fixClassRoomItemColors = function () {
 };
 
 
+// Everything below will be moved to a different JS but for now, lets leave it here for debugging
+
 function doActualExtrusionOfImage(pathToImgWeWantToExtrude, x, y) {
     // temporary canvas to hold the image and retrieve its data
     let tempCanvasToGetImageData = document.createElement('canvas');
@@ -7099,7 +7101,7 @@ function doActualExtrusionOfImage(pathToImgWeWantToExtrude, x, y) {
     let a = document.createElement('a');
     a.href = myNewImage.src;
     a.download = "image.png";
-    console.log(a);
+    // console.log(a);
     // Uncomment code below to allow for download of grayscaled image
     // document.body.appendChild(a);
     // a.click();
@@ -7136,6 +7138,36 @@ function doActualExtrusionOfImage(pathToImgWeWantToExtrude, x, y) {
     let heightMapDataForMyImage = heightMap(pathToImgWeWantToExtrude);
     console.log("Data returned from inner function is: " + heightMapDataForMyImage);
 
+    function createPlaneWithHeightMapData(data) {
+        let geometry = new THREE.PlaneGeometry(10, 10, 9, 9);
+        console.log(pathToImgWeWantToExtrude.src);
+        let texture = new THREE.ImageUtils.loadTexture(pathToImgWeWantToExtrude.src);
+        let material = new THREE.MeshLambertMaterial( {map: texture} );
+        let plane = new THREE.Mesh(geometry, material);
+
+        for (let i = 0; i < plane.geometry.vertices.length; i++){
+            plane.geometry.vertices[i].z = data[i];
+        }
+        return plane;
+    }
+    // Code below will return a three js plane mesh object from our function above
+    let returnedPlaneFromOurFunction = createPlaneWithHeightMapData(heightMapDataForMyImage);
+    console.log(returnedPlaneFromOurFunction);
+
+    //TODO Create a Scene and Add the plane to the scene and export the Scene as STL
+    try {
+        let scene = new THREE.Scene();
+        scene.add(returnedPlaneFromOurFunction);    // Adding our returned plane mesh the function above
+
+        let exporter = new THREE.STLExporter();
+        let str = exporter.parse(scene);
+
+        let blobbb = new Blob([str], {type: 'text/plain'});
+        saveAs(blobbb, '2D.stl');
+        console.log("Exported scene successfully");
+    } catch (e) {
+        console.log("Exception from trying to export the 2D.stl file was: " + e);
+    }
 }
 
 function extruding2D(myself) {
