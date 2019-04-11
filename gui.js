@@ -7073,12 +7073,6 @@ ProjectDialogMorph.prototype.fixClassRoomItemColors = function () {
 
 
 function doActualExtrusionOfImage(pathToImgWeWantToExtrude, x, y) {
-    console.log("inside the extrusion function");
-    console.log(pathToImgWeWantToExtrude);
-    console.log("now let's log the height and width of the image");
-    console.log(pathToImgWeWantToExtrude.width);
-    console.log(pathToImgWeWantToExtrude.height);
-
     // temporary canvas to hold the image and retrieve its data
     let tempCanvasToGetImageData = document.createElement('canvas');
     let ctx = tempCanvasToGetImageData.getContext("2d");
@@ -7087,12 +7081,6 @@ function doActualExtrusionOfImage(pathToImgWeWantToExtrude, x, y) {
     ctx.drawImage(pathToImgWeWantToExtrude, 0, 0);  // this should draw the image with its intrinsic size
 
     let myImageData = ctx.getImageData(x, y, pathToImgWeWantToExtrude.width, pathToImgWeWantToExtrude.height);
-    console.log(myImageData);
-
-    console.log("my image data data is: ");
-    console.log(myImageData.data);
-    console.log(myImageData.width);
-    console.log(myImageData.height);
 
     for (let i=0;i<myImageData.data.length;i+=4) {
         let avg = (myImageData.data[i]+myImageData.data[i+1]+myImageData.data[i+2])/3;
@@ -7105,34 +7093,56 @@ function doActualExtrusionOfImage(pathToImgWeWantToExtrude, x, y) {
 
     let myNewImage = new Image();
     myNewImage.src = tempCanvasToGetImageData.toDataURL("image/png");
-    console.log(myNewImage);
-    console.log(myNewImage.width);
-    console.log(myNewImage.height);
 
-    // We are creating a temp a tag to hold the image above which we created from our temp canvas above
+    // We are creating a temp anchor tag to hold the image above which we created from our temp canvas above,
+    // Code below should download the grayscaled image
     let a = document.createElement('a');
     a.href = myNewImage.src;
     a.download = "image.png";
     console.log(a);
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+    // Uncomment code below to allow for download of grayscaled image
+    // document.body.appendChild(a);
+    // a.click();
+    // document.body.removeChild(a);
+
+    // Function below gets our heightMap for a specified image passed in as an argument
+    function heightMap(image) {
+				let tempCanvasB = document.createElement( "canvas" );
+				tempCanvasB.width = image.width;
+				tempCanvasB.height = image.height;
+				let contextB = tempCanvasB.getContext("2d");
+
+				let size = image.width * image.height;
+                let data = new Float32Array( size );
+
+				contextB.drawImage(image,0,0);
+
+				for ( let i = 0; i < size; i ++ ) {
+					data[i] = 0;
+				}
+
+				let imgdata = contextB.getImageData(0, 0, image.width, image.height);
+				let pix = imgdata.data;
+
+				let j=0;
+				for (let i = 0, n = pix.length; i < n; i += (4)) {
+					let all = pix[i]+pix[i+1]+pix[i+2];
+					data[j++] = all/30;
+				}
+				return data;
+    }
+
+    // Get heightMap for our image
+    let heightMapDataForMyImage = heightMap(pathToImgWeWantToExtrude);
+    console.log("Data returned from inner function is: " + heightMapDataForMyImage);
 
 }
 
 function extruding2D(myself) {
-    // console.log(myself);    // this is the IDE Morph
-    // console.log(this);  // this is the Window Object
     let stage = myself.stage;   // this is the stage
     let childrenOfStage = stage.children;    // this should be an array of the all children of our stage
-    // console.log(childrenOfStage);
-    // console.log(typeof childrenOfStage);
-    // console.log(childrenOfStage[0]);
-    // console.log(childrenOfStage[0].costume);
-    // console.log(childrenOfStage[0].costume.url);
-        let urlOfImage = childrenOfStage[0].costume.url;    // this is the url, i.e path to our image on the stage
-        console.log(urlOfImage);
-        let pathToImgWeWantToExtrude = new Image(); // here we create an image
+    let urlOfImage = childrenOfStage[0].costume.url;    // this is the url, i.e path to our image on the stage
+    let pathToImgWeWantToExtrude = new Image(); // here we create an image
     pathToImgWeWantToExtrude.src = urlOfImage; // we set the source of the image to the url above if its not null
     doActualExtrusionOfImage(pathToImgWeWantToExtrude, 0, 0); // we pass the image to the function that does the extrusion
 }

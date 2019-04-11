@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7233d48b-d34d-45bb-baef-ee7963f2cde3" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/gui.js" beforeDir="false" afterPath="$PROJECT_DIR$/gui.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -15,8 +15,16 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gui.js">
           <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
             <state relative-caret-position="463">
               <caret line="7117" column="33" selection-start-line="7117" selection-start-column="33" selection-end-line="7117" selection-end-column="33" />
+=======
+            <state relative-caret-position="595">
+              <caret line="7076" selection-start-line="7076" selection-end-line="7076" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+>>>>>>> Stashed changes
             </state>
           </provider>
         </entry>
@@ -1096,18 +1104,31 @@
       <workItem from="1554476627675" duration="5000" />
       <workItem from="1554819715260" duration="8574000" />
       <workItem from="1554832999430" duration="1289000" />
+<<<<<<< Updated upstream
       <workItem from="1554837919152" duration="311000" />
       <workItem from="1554909125027" duration="9475000" />
+=======
+      <workItem from="1554837919152" duration="1500000" />
+      <workItem from="1554991313038" duration="47000" />
+>>>>>>> Stashed changes
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
+<<<<<<< Updated upstream
     <option name="totallyTimeSpent" value="44077000" />
+=======
+    <option name="totallyTimeSpent" value="35817000" />
+>>>>>>> Stashed changes
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="47" width="1556" height="929" extended-state="0" />
     <layout>
+<<<<<<< Updated upstream
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.21202114" />
+=======
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.25772098" />
+>>>>>>> Stashed changes
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -1120,8 +1141,13 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
+<<<<<<< Updated upstream
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.31501833" side_tool="true" weight="0.15224913" />
       <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.6849817" visible="true" weight="0.22939068" />
+=======
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.3146965" side_tool="true" visible="true" weight="0.28722382" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="11" sideWeight="0.6853035" visible="true" weight="0.28722382" />
+>>>>>>> Stashed changes
       <window_info anchor="bottom" id="Python Console" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -2139,8 +2165,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/gui.js">
       <provider selected="true" editor-type-id="text-editor">
+<<<<<<< Updated upstream
         <state relative-caret-position="463">
           <caret line="7117" column="33" selection-start-line="7117" selection-start-column="33" selection-end-line="7117" selection-end-column="33" />
+=======
+        <state relative-caret-position="595">
+          <caret line="7076" selection-start-line="7076" selection-end-line="7076" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#220977#221036#0" />
+          </folding>
+>>>>>>> Stashed changes
         </state>
       </provider>
     </entry>
