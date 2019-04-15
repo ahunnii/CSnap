@@ -2681,14 +2681,14 @@ IDE_Morph.prototype.projectMenu = function () {
     // //
 
 
-    menu.addItem(
-        'Export 2D as 3D STL',
-        function () {
-            console.log('Export 2D as STL menu option was clicked');
-            let myselfToPassToOurFunction = myself;
-            extruding2D(myselfToPassToOurFunction);
-        }
-    );
+    // menu.addItem(
+    //     'Export 2D as 3D STL',
+    //     function () {
+    //         console.log('Export 2D as STL menu option was clicked');
+    //         let myselfToPassToOurFunction = myself;
+    //         extruding2D(myselfToPassToOurFunction);
+    //     }
+    // );
 
     menu.addLine();
 
@@ -2805,9 +2805,24 @@ IDE_Morph.prototype.projectMenu = function () {
         'show different default scripts'
     );
 
+    let submenu = new MenuMorph(myself);
+
+    // submenu.addItem('Testing',
+    //     function () {
+    //         console.log("submenu worked");
+    //     },
+    //     'testing submenu'
+    // );
+
+    menu.addHoverItem(
+        'Load Costume...            >',
+            submenu
+    );
+
+
     if (this.currentSprite instanceof SpriteMorph) {
         // SpriteMorph
-        menu.addItem(
+        submenu.addItem(
             '2D ' + localize(graphicsName) + '...',
             function () {
 
@@ -2851,7 +2866,7 @@ IDE_Morph.prototype.projectMenu = function () {
             'Select a 2D costume from the media library'
         );
 
-        menu.addItem(
+        submenu.addItem(
             '3D ' + localize(graphicsName) + '...',
             function () {
                 var dir = config.asset_path + graphicsName + '3D',
@@ -7072,7 +7087,7 @@ ProjectDialogMorph.prototype.fixClassRoomItemColors = function () {
 };
 
 
-// Everything below will be moved to a different JS but for now, lets leave it here for debugging
+// Everything below will be moved to a different JS file but for now, lets leave it here for debugging
 
 function doActualExtrusionOfImage(pathToImgWeWantToExtrude, x, y) {
     // temporary canvas to hold the image and retrieve its data
@@ -7108,13 +7123,15 @@ function doActualExtrusionOfImage(pathToImgWeWantToExtrude, x, y) {
     // document.body.removeChild(a);
 
     // Function below gets our heightMap for a specified image passed in as an argument
-    function heightMap(image) {
+    function heightMap(image, scale) {
 				let tempCanvasB = document.createElement( "canvas" );
 				tempCanvasB.width = image.width;
 				tempCanvasB.height = image.height;
 				let contextB = tempCanvasB.getContext("2d");
 
 				let size = image.width * image.height;
+				console.log(size + " = width * height of given image");
+
                 let data = new Float32Array( size );
 
 				contextB.drawImage(image,0,0);
@@ -7127,16 +7144,17 @@ function doActualExtrusionOfImage(pathToImgWeWantToExtrude, x, y) {
 				let pix = imgdata.data;
 
 				let j=0;
-				for (let i = 0, n = pix.length; i < n; i += (4)) {
+				for (let i = 0, n = pix.length; i < n; i += 4) {
 					let all = pix[i]+pix[i+1]+pix[i+2];
-					data[j++] = all/30;
+					data[j++] = all/(12 * scale);
 				}
 				return data;
     }
 
+
     // Get heightMap for our image
-    let heightMapDataForMyImage = heightMap(pathToImgWeWantToExtrude);
-    console.log("Data returned from inner function is: " + heightMapDataForMyImage);
+    let heightMapDataForMyImage = heightMap(pathToImgWeWantToExtrude, 2);
+    // console.log("Data returned from inner function is: " + heightMapDataForMyImage);
 
     function createPlaneWithHeightMapData(data) {
         let geometry = new THREE.PlaneGeometry(10, 10, 9, 9);
@@ -7147,6 +7165,7 @@ function doActualExtrusionOfImage(pathToImgWeWantToExtrude, x, y) {
 
         for (let i = 0; i < plane.geometry.vertices.length; i++){
             plane.geometry.vertices[i].z = data[i];
+            console.log(data[i]);
         }
         return plane;
     }
@@ -7159,12 +7178,15 @@ function doActualExtrusionOfImage(pathToImgWeWantToExtrude, x, y) {
         let scene = new THREE.Scene();
         scene.add(returnedPlaneFromOurFunction);    // Adding our returned plane mesh the function above
 
-        let exporter = new THREE.STLExporter();
-        let str = exporter.parse(scene);
+        // let exporter = new THREE.STLExporter();
+        // let str = exporter.parse(scene);
+        //
+        // let blobbb = new Blob([str], {type: 'text/plain'});
+        // saveAs(blobbb, '2D.stl');
+        // console.log("Exported scene successfully");
 
-        let blobbb = new Blob([str], {type: 'text/plain'});
-        saveAs(blobbb, '2D.stl');
-        console.log("Exported scene successfully");
+        // console.log(returnedPlaneFromOurFunction.geometry.vertices);
+        console.log(scene.children);
     } catch (e) {
         console.log("Exception from trying to export the 2D.stl file was: " + e);
     }
