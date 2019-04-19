@@ -2819,6 +2819,10 @@ IDE_Morph.prototype.projectMenu = function () {
             submenu
     );
 
+    submenu.addItem('Custom 3D Block Shape',
+        this.addCustom3DPolygonBlock()
+    );
+
 
     if (this.currentSprite instanceof SpriteMorph) {
         // SpriteMorph
