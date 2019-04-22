@@ -2618,7 +2618,7 @@ SpriteMorph.prototype.wearCostume = function (costume) {
 
             this.mesh = mesh;
             this.hide();
-            this.object.children = []
+            this.object.children = [];
             this.object.add(this.mesh);
             this.parent.changed(); // redraw stage
         }

@@ -2819,8 +2819,9 @@ IDE_Morph.prototype.projectMenu = function () {
             submenu
     );
 
-    submenu.addItem('Custom 3D Block Shape',
-        this.addCustom3DPolygonBlock()
+    // this will be changed to a block but just adding this here for now
+    submenu.addItem('Custom 3D Polygon Shapes',
+            myself.dropped3dObject(myself.addCustom3DPolygonIcosahedron(myself, 5, 0, "red"))
     );
 
 
@@ -7091,116 +7092,162 @@ ProjectDialogMorph.prototype.fixClassRoomItemColors = function () {
 };
 
 
-// Everything below will be moved to a different JS file but for now, lets leave it here for debugging
+// // Everything below will be moved to a different JS file but for now, lets leave it here for debugging
+//
+// function doActualExtrusionOfImage(pathToImgWeWantToExtrude, x, y) {
+//     // temporary canvas to hold the image and retrieve its data
+//     let tempCanvasToGetImageData = document.createElement('canvas');
+//     let ctx = tempCanvasToGetImageData.getContext("2d");
+//     tempCanvasToGetImageData.width = pathToImgWeWantToExtrude.width;
+//     tempCanvasToGetImageData.height = pathToImgWeWantToExtrude.height;
+//     ctx.drawImage(pathToImgWeWantToExtrude, 0, 0);  // this should draw the image with its intrinsic size
+//
+//     let myImageData = ctx.getImageData(x, y, pathToImgWeWantToExtrude.width, pathToImgWeWantToExtrude.height);
+//
+//     for (let i=0;i<myImageData.data.length;i+=4) {
+//         let avg = (myImageData.data[i]+myImageData.data[i+1]+myImageData.data[i+2])/3;
+//         myImageData.data[i] = avg;
+//         myImageData.data[i+1] = avg;
+//         myImageData.data[i+2] = avg;
+//     }
+//
+//     ctx.putImageData(myImageData, 0, 0, 0, 0, myImageData.width, myImageData.height);
+//
+//     let myNewImage = new Image();
+//     myNewImage.src = tempCanvasToGetImageData.toDataURL("image/png");
+//
+//     // We are creating a temp anchor tag to hold the image above which we created from our temp canvas above,
+//     // Code below should download the grayscaled image
+//     let a = document.createElement('a');
+//     a.href = myNewImage.src;
+//     a.download = "image.png";
+//     // console.log(a);
+//     // Uncomment code below to allow for download of grayscaled image
+//     // document.body.appendChild(a);
+//     // a.click();
+//     // document.body.removeChild(a);
+//
+//     // Function below gets our heightMap for a specified image passed in as an argument
+//     function heightMap(image, scale) {
+// 				let tempCanvasB = document.createElement( "canvas" );
+// 				tempCanvasB.width = image.width;
+// 				tempCanvasB.height = image.height;
+// 				let contextB = tempCanvasB.getContext("2d");
+//
+// 				let size = image.width * image.height;
+// 				console.log(size + " = width * height of given image");
+//
+//                 let data = new Float32Array( size );
+//
+// 				contextB.drawImage(image,0,0);
+//
+// 				for ( let i = 0; i < size; i ++ ) {
+// 					data[i] = 0;
+// 				}
+//
+// 				let imgdata = contextB.getImageData(0, 0, image.width, image.height);
+// 				let pix = imgdata.data;
+//
+// 				let j=0;
+// 				for (let i = 0, n = pix.length; i < n; i += 4) {
+// 					let all = pix[i]+pix[i+1]+pix[i+2];
+// 					data[j++] = all/(12 * scale);
+// 				}
+// 				return data;
+//     }
+//
+//
+//     // Get heightMap for our image
+//     let heightMapDataForMyImage = heightMap(pathToImgWeWantToExtrude, 2);
+//     // console.log("Data returned from inner function is: " + heightMapDataForMyImage);
+//
+//     function createPlaneWithHeightMapData(data) {
+//         let geometry = new THREE.PlaneGeometry(10, 10, 9, 9);
+//         console.log(pathToImgWeWantToExtrude.src);
+//         let texture = new THREE.ImageUtils.loadTexture(pathToImgWeWantToExtrude.src);
+//         let material = new THREE.MeshLambertMaterial( {map: texture} );
+//         let plane = new THREE.Mesh(geometry, material);
+//
+//         for (let i = 0; i < plane.geometry.vertices.length; i++){
+//             plane.geometry.vertices[i].z = data[i];
+//             console.log(data[i]);
+//         }
+//         return plane;
+//     }
+//     // Code below will return a three js plane mesh object from our function above
+//     let returnedPlaneFromOurFunction = createPlaneWithHeightMapData(heightMapDataForMyImage);
+//     console.log(returnedPlaneFromOurFunction);
+//
+//     //TODO Create a Scene and Add the plane to the scene and export the Scene as STL
+//     try {
+//         let scene = new THREE.Scene();
+//         scene.add(returnedPlaneFromOurFunction);    // Adding our returned plane mesh the function above
+//
+//         // let exporter = new THREE.STLExporter();
+//         // let str = exporter.parse(scene);
+//         //
+//         // let blobbb = new Blob([str], {type: 'text/plain'});
+//         // saveAs(blobbb, '2D.stl');
+//         // console.log("Exported scene successfully");
+//
+//         // console.log(returnedPlaneFromOurFunction.geometry.vertices);
+//         console.log(scene.children);
+//     } catch (e) {
+//         console.log("Exception from trying to export the 2D.stl file was: " + e);
+//     }
+// }
+//
+// function extruding2D(myself) {
+//     let stage = myself.stage;   // this is the stage
+//     let childrenOfStage = stage.children;    // this should be an array of the all children of our stage
+//     let urlOfImage = childrenOfStage[0].costume.url;    // this is the url, i.e path to our image on the stage
+//     let pathToImgWeWantToExtrude = new Image(); // here we create an image
+//     pathToImgWeWantToExtrude.src = urlOfImage; // we set the source of the image to the url above if its not null
+//     doActualExtrusionOfImage(pathToImgWeWantToExtrude, 0, 0); // we pass the image to the function that does the extrusion
+// }
 
-function doActualExtrusionOfImage(pathToImgWeWantToExtrude, x, y) {
-    // temporary canvas to hold the image and retrieve its data
-    let tempCanvasToGetImageData = document.createElement('canvas');
-    let ctx = tempCanvasToGetImageData.getContext("2d");
-    tempCanvasToGetImageData.width = pathToImgWeWantToExtrude.width;
-    tempCanvasToGetImageData.height = pathToImgWeWantToExtrude.height;
-    ctx.drawImage(pathToImgWeWantToExtrude, 0, 0);  // this should draw the image with its intrinsic size
+/**
+ * function below allows for adding icosahedron shape to scene
+ * @param myself CSnap world
+ * @param radius default is set to 5
+ * @param detail default is set to 1, changing this will effectively make this a sphere so be careful with this
+ * @param colorParam default is set to blue but we can pass in any color we like
+ * for reference see https://threejs.org/docs/#api/en/geometries/IcosahedronGeometry
+ */
+IDE_Morph.prototype.addCustom3DPolygonIcosahedron = function (myself, radius, detail, colorParam){
 
-    let myImageData = ctx.getImageData(x, y, pathToImgWeWantToExtrude.width, pathToImgWeWantToExtrude.height);
-
-    for (let i=0;i<myImageData.data.length;i+=4) {
-        let avg = (myImageData.data[i]+myImageData.data[i+1]+myImageData.data[i+2])/3;
-        myImageData.data[i] = avg;
-        myImageData.data[i+1] = avg;
-        myImageData.data[i+2] = avg;
-    }
-
-    ctx.putImageData(myImageData, 0, 0, 0, 0, myImageData.width, myImageData.height);
-
-    let myNewImage = new Image();
-    myNewImage.src = tempCanvasToGetImageData.toDataURL("image/png");
-
-    // We are creating a temp anchor tag to hold the image above which we created from our temp canvas above,
-    // Code below should download the grayscaled image
-    let a = document.createElement('a');
-    a.href = myNewImage.src;
-    a.download = "image.png";
-    // console.log(a);
-    // Uncomment code below to allow for download of grayscaled image
-    // document.body.appendChild(a);
-    // a.click();
-    // document.body.removeChild(a);
-
-    // Function below gets our heightMap for a specified image passed in as an argument
-    function heightMap(image, scale) {
-				let tempCanvasB = document.createElement( "canvas" );
-				tempCanvasB.width = image.width;
-				tempCanvasB.height = image.height;
-				let contextB = tempCanvasB.getContext("2d");
-
-				let size = image.width * image.height;
-				console.log(size + " = width * height of given image");
-
-                let data = new Float32Array( size );
-
-				contextB.drawImage(image,0,0);
-
-				for ( let i = 0; i < size; i ++ ) {
-					data[i] = 0;
-				}
-
-				let imgdata = contextB.getImageData(0, 0, image.width, image.height);
-				let pix = imgdata.data;
-
-				let j=0;
-				for (let i = 0, n = pix.length; i < n; i += 4) {
-					let all = pix[i]+pix[i+1]+pix[i+2];
-					data[j++] = all/(12 * scale);
-				}
-				return data;
-    }
-
-
-    // Get heightMap for our image
-    let heightMapDataForMyImage = heightMap(pathToImgWeWantToExtrude, 2);
-    // console.log("Data returned from inner function is: " + heightMapDataForMyImage);
-
-    function createPlaneWithHeightMapData(data) {
-        let geometry = new THREE.PlaneGeometry(10, 10, 9, 9);
-        console.log(pathToImgWeWantToExtrude.src);
-        let texture = new THREE.ImageUtils.loadTexture(pathToImgWeWantToExtrude.src);
-        let material = new THREE.MeshLambertMaterial( {map: texture} );
-        let plane = new THREE.Mesh(geometry, material);
-
-        for (let i = 0; i < plane.geometry.vertices.length; i++){
-            plane.geometry.vertices[i].z = data[i];
-            console.log(data[i]);
+    let icosahedron = function () {
+        if (radius === undefined || detail === undefined){
+            radius = 5;
+            detail = 0;
         }
-        return plane;
-    }
-    // Code below will return a three js plane mesh object from our function above
-    let returnedPlaneFromOurFunction = createPlaneWithHeightMapData(heightMapDataForMyImage);
-    console.log(returnedPlaneFromOurFunction);
 
-    //TODO Create a Scene and Add the plane to the scene and export the Scene as STL
-    try {
-        let scene = new THREE.Scene();
-        scene.add(returnedPlaneFromOurFunction);    // Adding our returned plane mesh the function above
+        let enteredColorToLowerCase = colorParam.toLowerCase();
+        let color = "";
+        let emissive = "";
 
-        // let exporter = new THREE.STLExporter();
-        // let str = exporter.parse(scene);
-        //
-        // let blobbb = new Blob([str], {type: 'text/plain'});
-        // saveAs(blobbb, '2D.stl');
-        // console.log("Exported scene successfully");
+        if (enteredColorToLowerCase !== undefined){
+            color = new THREE.Color(enteredColorToLowerCase);
+            emissive = color;
+        } else {
+            color = new THREE.Color( 'blue' );
+            emissive = color;
+        }
 
-        // console.log(returnedPlaneFromOurFunction.geometry.vertices);
-        console.log(scene.children);
-    } catch (e) {
-        console.log("Exception from trying to export the 2D.stl file was: " + e);
-    }
-}
+        console.log(color);
+        console.log(emissive);
 
-function extruding2D(myself) {
-    let stage = myself.stage;   // this is the stage
-    let childrenOfStage = stage.children;    // this should be an array of the all children of our stage
-    let urlOfImage = childrenOfStage[0].costume.url;    // this is the url, i.e path to our image on the stage
-    let pathToImgWeWantToExtrude = new Image(); // here we create an image
-    pathToImgWeWantToExtrude.src = urlOfImage; // we set the source of the image to the url above if its not null
-    doActualExtrusionOfImage(pathToImgWeWantToExtrude, 0, 0); // we pass the image to the function that does the extrusion
-}
+
+        let geometry = new THREE.IcosahedronGeometry(radius, detail);
+        let material = new THREE.MeshLambertMaterial({ emissive: emissive, color: color });
+        return new THREE.Mesh(geometry, material);
+    };
+
+    //TODO Add icosahedron as a costume to CSnap's stage.
+    // Unsure about below, let's see if it works
+
+    this.currentSprite.addCostume(icosahedron());
+    this.currentSprite.wearCostume(icosahedron());
+    this.spriteBar.tabBar.tabTo('costumes');
+    this.hasChangedMedia = true;
+};
