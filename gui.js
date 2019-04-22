@@ -7251,6 +7251,9 @@ function addCustom3DPolygonIcosahedron(myself, radius, detail, colorParam){
 
             let new_object = icosahedron();
 
+            let sphere = new_object.geometry.boundingSphere; // THREE.Sphere
+            new_object.position.set( -sphere.center.x, -sphere.center.y, -sphere.center.z );
+
             myself.currentSprite.addCostume(new_object);
             myself.currentSprite.wearCostume(new_object);
             myself.spriteBar.tabBar.tabTo('costumes');
