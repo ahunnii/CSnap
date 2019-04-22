@@ -2807,24 +2807,26 @@ IDE_Morph.prototype.projectMenu = function () {
 
     let submenu = new MenuMorph(myself);
 
-    // submenu.addItem('Testing',
-    //     function () {
-    //         console.log("submenu worked");
-    //     },
-    //     'testing submenu'
-    // );
-
-    menu.addHoverItem(
-        'Load Costume...            >',
-        submenu
+    submenu.addItem('Testing',
+        function () {
+            console.log("submenu worked");
+        },
+        'testing submenu'
     );
 
     // console.log(myself);
     // console.log(myself.parent);
 
     // this will be changed to a block but just adding this here for now
-    submenu.addItem('Custom 3D Polygon Shape',
-        addCustom3DPolygonIcosahedron(myself, 5, 0, "red")
+    submenu.addItem('Custom 3D Polygon Shape', function () {
+                addCustom3DPolygonIcosahedron(myself, 5, 0, "red")
+        },
+        'Add Icosahedron Polygon'
+    );
+
+    menu.addHoverItem(
+        'Load Costume...            >',
+        submenu
     );
 
 
@@ -7230,8 +7232,8 @@ function addCustom3DPolygonIcosahedron(myself, radius, detail, colorParam){
                     emissive = color;
                 }
 
-                console.log(color);
-                console.log(emissive);
+                // console.log(color);
+                // console.log(emissive);
 
 
                 let geometry = new THREE.IcosahedronGeometry(radius, detail);
@@ -7249,16 +7251,26 @@ function addCustom3DPolygonIcosahedron(myself, radius, detail, colorParam){
 
             let new_object = icosahedron();
 
+            myself.currentSprite.addCostume(new_object);
+            myself.currentSprite.wearCostume(new_object);
+            myself.spriteBar.tabBar.tabTo('costumes');
+            myself.hasChangedMedia = true;
+
             // myself.object.add(new_object);
             // myself.mesh = new_object;
             // myself.parent.changed();
             // console.log(new_object);
 
-            console.log(myself);
-            let stage = myself.stage;
-            console.log(stage);
-            console.log(new_object);
-            stage.costume.addCostume(new_object);
+            // console.log(myself);
+            // let stage = myself.stage;
+            // console.log(stage);
+            // console.log(new_object);
+            // let childrenOfStage = stage.children;
+            // console.log(childrenOfStage);
+            // console.log(childrenOfStage[0].name);
+            // childrenOfStage[0].costumes[0] = new_object;
+            // console.log(childrenOfStage[0].costumes);
+
 
     } catch (e) {
         console.log(e);
