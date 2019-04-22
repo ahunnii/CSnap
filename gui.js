@@ -2820,7 +2820,7 @@ IDE_Morph.prototype.projectMenu = function () {
     );
 
     // this will be changed to a block but just adding this here for now
-    submenu.addItem('Custom 3D Polygon Shapes',
+    submenu.addItem('Custom 3D Polygon Shape',
             myself.dropped3dObject(myself.addCustom3DPolygonIcosahedron(myself, 5, 0, "red"))
     );
 
