@@ -7216,7 +7216,7 @@ function addCustom3DPolygonIcosahedron(myself, radius, detail, colorParam){
     try {
             let icosahedron = function () {
                 if (radius === undefined || detail === undefined) {
-                    radius = 5;
+                    radius = 1;
                     detail = 0;
                 }
 

@@ -1565,6 +1565,8 @@ SpriteMorph.prototype.drawNew = function () {
         ctx,
         handle;
 
+    console.log(myself);
+
     if (this.costume && this.costume.is3D) {
         // the 3D object will be rendered in StageMorph.drawOn() later
         this.hide();
@@ -6476,7 +6478,7 @@ function Costume(canvas, name, rotationCenter, url, is3D, is3dSwitchable) {
     // newly added for 3D
     this.url = url;
     this.is3D = is3D;
-    this.is3dSwitchable = is3dSwitchable
+    this.is3dSwitchable = is3dSwitchable;
     this.geometry = null;
     this.map = null;
 }
