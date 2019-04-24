@@ -732,6 +732,7 @@ SpriteMorph.prototype.initBlocks = function () {
             spec: 'text %s size: %n height: %n',
             defaults: [localize('Hello!'), 30, 3]
         },
+        // Still Working on below
         renderIcosahedron: {
 			"type": "command",
 			"category": "pen",
@@ -3329,7 +3330,7 @@ SpriteMorph.prototype.renderText = function (text, size, height) {
 
 //Todo confirm with Ron to see if this is the right spot to add the Icosahedron
 
-SpriteMorph.prototype.renderIcosahedron = function (myself, radius, detail, colorParam){
+SpriteMorph.prototype.renderIcosahedron = function (radius, detail, colorParam){
     try {
             let icosahedron = function () {
                 if (radius === undefined || detail === undefined) {
@@ -3353,6 +3354,11 @@ SpriteMorph.prototype.renderIcosahedron = function (myself, radius, detail, colo
                 return new THREE.Mesh(geometry, material);
             };
             this.render3dShape(icosahedron());
+
+            // For debugging
+            console.log(myself);
+            console.log(this);
+
     } catch (e) {
         console.log(e);
     }
