@@ -3598,6 +3598,7 @@ SpriteMorph.prototype.justDropped = function () {
 };
 
 // SpriteMorph drawing:
+// Will make changes here
 
 SpriteMorph.prototype.drawLine = function (start, dest, isBorder) {
     var stagePos = this.parent.bounds.origin,
