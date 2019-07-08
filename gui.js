@@ -2780,28 +2780,28 @@ IDE_Morph.prototype.projectMenu = function () {
     menu.addItem('Save As...', 'saveProjectsBrowser');
 
     // // Button to save project as STL for 3D printing
-    // menu.addItem('Export as STL',
-    //     function (){
-    //         console.log("Exporting project as STL for 3D printing");
-    //         // Below we call our costume function and pass in the name of the project
+     menu.addItem('Export as STL',
+         function (){
+             console.log("Exporting project as STL for 3D printing");
+             // Below we call our costume function and pass in the name of the project
     //         console.log("my project name is " + myself.projectName);
-    //         try {
-    //             this.exportProjectAsSTL();
-    //         } catch (e) {
-    //             console.log("Error trying to export file was " + e);
-    //         }
-    // });
+             try {
+                 this.exportProjectAsSTL();
+             } catch (e) {
+                 console.log("Error trying to export file was " + e);
+             }
+     });
 
     //
 
 
-    menu.addItem(
-        'Export 2D as 3D STL',
-        function () {
-            let myselfToPassToOurFunction = myself;
-            extruding2D(myselfToPassToOurFunction);
-        }
-    );
+    //menu.addItem(
+    //    'Export 2D as 3D STL',
+    //    function () {
+    //        let myselfToPassToOurFunction = myself;
+    //        extruding2D(myselfToPassToOurFunction);
+    //    }
+    //);
 
     menu.addLine();
 
@@ -4346,21 +4346,41 @@ IDE_Morph.prototype.exportProjectAsSTL = function () {
     console.log(world);
     try {
                 menu = this.showMessage('Exporting as STL');
-                let scene = copy(this.stage.scene);
-                // console.log("Scene is: " + scene);
 
+
+                let stage = this.children[4];
+                //can't really guarantee that it'll always be the 4th child, but w/e
+
+                console.log("rendering image...");
+                let image = stage.fullImageClassic().toDataURL();
+                //NOTE: fullImageClassic is what actually renders the image
+
+                let filename = this.projectName;
+                console.log("filename = " + filename);
+
+                let directory = "" + filename;
+                console.log("directory set at: " + directory);
+                //change directory as needed here
+
+                let STL_options = {};
+                //TODO: adjust STL conversion options here
+
+                console.log("initializing STL exporter...");
                 let exporter = new THREE.STLExporter();
-                // console.log("Exporter: " + exporter);
 
-                let exportedScene = exporter.parse(scene);
+                console.log("parsing image...");
+                let exportedScene = exporter.parse(image, directory, filename, STL_options);
+
                 let blob = new Blob( [exportedScene], { type: 'text/plain'});
+
+                console.log("saving file as " + modelFileName);
                 saveAs(blob, (this.projectName ? this.projectName : '3DCSDT') + '.stl');
 
                 menu.destroy();
                 this.showMessage('Exported!', 1);
     } catch (err) {
                 this.showMessage('Export failed: ' + err);
-                console.log(err)
+                console.log("Export error: " + err);
     }
 };
 
@@ -5912,7 +5932,6 @@ SpriteIconMorph.prototype.init = function (aSprite, aTemplate) {
             IDE_Morph.prototype.frameColor,
             IDE_Morph.prototype.frameColor
         ];
-
     }
 
     action = function () {
@@ -6108,12 +6127,56 @@ SpriteIconMorph.prototype.userMenu = function () {
         menu.addItem(
             'pic...',
             function () {
-                world.children[0].saveFileAs(myself.object.fullImageClassic().toDataURL(), 'image/png', world.children[0].projetName + ' Stage');
+                world.children[0].saveFileAs(myself.object.fullImageClassic().toDataURL(), 'image/png', world.children[0].projectName + ' Stage');
             },
             'open a new window\nwith a picture of the stage'
         );
+
+//this code is last done by Jimmy Ruan
+//reach me @	773-280-1417
+//				jiruan@umich.edu (may or may not be reachable after I graduated)
+
+        //Adds a menu option to export the stage rendering as an STL
+        //<jimmy's code>
+        menu.addItem(
+            "export as STL",
+            function() {
+                try {
+                    console.log("rendering image...");
+                    let renderedImageURL = myself.object.fullImageClassic().toDataURL();
+                    //NOTE: fullImageClassic is what actually renders the image
+                    let modelFileName = world.children[0].projectName + ".stl";
+                    console.log("filename = " + modelFileName);
+
+                    let modelURL = "test.stl";
+                    //let modelURL = [directory] + modelFileName; //change  directory to point to where STL files are stored;
+                    //eg: adinkra.stl if project name is adinkra
+                    console.log("directory set at: " + modelURL);
+
+                    let STL_options = {};
+                    //TODO: adjust STL options here
+
+                    console.log("initializing STL exporter...");
+                    let exporter = new STLExporter();
+
+                    console.log("parsing image...");
+                    let STLFile = exporter.parse(renderedImageURL, modelURL, modelFileName, STL_options);
+                } catch (err) {
+                        console.log("Export error: " + err);
+                }
+
+                let blob = new Blob( [STLFile], { type: 'model/stl'});
+
+                console.log("saving file as " + modelFileName);
+                saveAs(blob, modelFileName);
+            },
+            "render the stage and turn it into an STL file"
+        );
+        //</jimmy's code>
+
         return menu;
     }
+
     if (!(this.object instanceof SpriteMorph)) {return null; }
     menu.addItem("show", 'showSpriteOnStage');
     menu.addLine();
