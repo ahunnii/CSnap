@@ -4343,7 +4343,7 @@ IDE_Morph.prototype.exportProject = function (name, plain) {
 IDE_Morph.prototype.exportProjectAsSTL = function () {
     let menu;
     // Testing to see what world is
-    console.log(world);
+    // console.log(world);
     try {
                 menu = this.showMessage('Exporting as STL');
 
@@ -4355,7 +4355,7 @@ IDE_Morph.prototype.exportProjectAsSTL = function () {
                 let image = stage.fullImageClassic().toDataURL();
                 //NOTE: fullImageClassic is what actually renders the image
 
-                let filename = this.projectName;
+                let filename = this.projectName + ".stl";
                 console.log("filename = " + filename);
 
                 let directory = "" + filename;
@@ -4368,19 +4368,22 @@ IDE_Morph.prototype.exportProjectAsSTL = function () {
                 console.log("initializing STL exporter...");
                 let exporter = new THREE.STLExporter();
 
-                console.log("parsing image...");
-                let exportedScene = exporter.parse(image, directory, filename, STL_options);
+                console.log("parsing image...");        //directory, filename
+                exporter.parse(image, "test.stl", "test.stl", STL_options);
+/*
+                let exportedScene = exporter.parse(image, "test.stl", "test.stl", STL_options);
 
                 let blob = new Blob( [exportedScene], { type: 'text/plain'});
 
-                console.log("saving file as " + modelFileName);
+                console.log("saving file as " + filename);
                 saveAs(blob, (this.projectName ? this.projectName : '3DCSDT') + '.stl');
+*/
 
                 menu.destroy();
                 this.showMessage('Exported!', 1);
     } catch (err) {
                 this.showMessage('Export failed: ' + err);
-                console.log("Export error: " + err);
+                console.log("Export error: " +  err);
     }
 };
 
@@ -6160,15 +6163,18 @@ SpriteIconMorph.prototype.userMenu = function () {
                     let exporter = new STLExporter();
 
                     console.log("parsing image...");
-                    let STLFile = exporter.parse(renderedImageURL, modelURL, modelFileName, STL_options);
+                    exporter.parse(renderedImageURL, modelURL, modelFileName, STL_options);
                 } catch (err) {
                         console.log("Export error: " + err);
                 }
 
+                /*
                 let blob = new Blob( [STLFile], { type: 'model/stl'});
 
                 console.log("saving file as " + modelFileName);
                 saveAs(blob, modelFileName);
+                */
+
             },
             "render the stage and turn it into an STL file"
         );

@@ -2570,7 +2570,7 @@ Morph.prototype.drawNew = function () {
         this.drawCachedTexture();
     } else if (this.texture) {
         this.drawTexture(this.texture);
-    } else if (source != undefined && this.isIcon){
+    } else if (source != undefined && this.isIcon) {
         context.drawImage(source, 0, 0);
     }
 };
@@ -3449,6 +3449,7 @@ Morph.prototype.developersMenu = function () {
         },
         'open a new window\nwith a picture of this morph'
     );
+
     menu.addLine();
     if (this.isDraggable) {
         menu.addItem(
@@ -4043,7 +4044,6 @@ PenMorph.prototype.drawNew = function (facing) {
     context.lineWidth = 1;
     context.stroke();
     context.fill();
-
 };
 
 // PenMorph access:
@@ -5523,7 +5523,6 @@ SliderButtonMorph.prototype.drawNew = function () {
 
     this.color = colorBak;
     this.image = this.normalImage;
-
 };
 
 SliderButtonMorph.prototype.drawEdges = function () {

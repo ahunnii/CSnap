@@ -50,7 +50,7 @@ THREE.STLExporter.prototype = {
 
 			//send post request to backend with data url
 			//should receive the STL model as a response
-			fetch(modelURL,
+			fetch(directory,
 				{
 					method: "POST",
 					body: image //note to future self: this is the form data
@@ -64,14 +64,17 @@ THREE.STLExporter.prototype = {
 				}
 			)
 				.then(function() { //now we get the resulting STL file
-					let STLBlob = fetch(directory);
-					saveAs(STLBlob, filename); //this should download the file
-					// modelFileName should only contain the end part of the URL;
-					//TODO: save stl here
+					fetch(directory)
+						.then(function(response) {
+							return response.blob();
+						})
+						.then(function(STLBlob) {
+							saveAs(STLBlob, filename); //this should download the file
+						});
 				})
-				.catch(function() {
+				.catch(function(errorMessage) {
 					console.log("Failed to send image to " + directory);
-					//TODO: insert more error messages as needed
+					console.log("Error: " + errorMessage);
 				});
                 //</jimmy's code>
 
