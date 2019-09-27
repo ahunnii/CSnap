@@ -298,8 +298,8 @@ IDE_Morph.prototype.openIn = function (world) {
     // dynamic notifications from non-source text files
     // has some issues, commented out for now
     /*
-    this.cloudMsg = getURL('http://community.csdt.rpi.edu/cloudmsg.txt');
-    motd = getURL('http://community.csdt.rpi.edu/motd.txt');
+    this.cloudMsg = getURL('http://csdt.rpi.edu/cloudmsg.txt');
+    motd = getURL('http://csdt.rpi.edu/motd.txt');
     if (motd) {
         this.inform('CSnap', motd);
     }
