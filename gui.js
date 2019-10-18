@@ -1784,6 +1784,7 @@ IDE_Morph.prototype.reactToWorldResize = function (rect) {
 };
 
 IDE_Morph.prototype.droppedImage = function (aCanvas, name, url) {
+    console.log('test');
     var costume = new Costume(
         aCanvas,
         name ? name.split('.')[0] : '', // up to period
@@ -2799,42 +2800,54 @@ IDE_Morph.prototype.projectMenu = function () {
         menu.addItem(
             '2D ' + localize(graphicsName) + '...',
             function () {
-
+    
                 let directory = config.asset_path + graphicsName,
 
-                names = myself.getCostumesList(directory+'/costumes.html'), // Passing in a url or in this
+                names = myself.getCostumesList2D(); // Passing in a url or in this
                     // a path to the getCostumesList function returns
                     // an array of images gathered from a html page using a regular expression to filter out the name from
                     // from the <a href attribute>
                     // i.e alonzo etc, whatever url you pass into here, this method will make a get request
 
-
-                libMenu = new MenuMorph(
-                    myself,
-                    localize('Import') + ' ' + '2D ' + localize(graphicsName)
+                
+                let libMenu = new MenuMorph(myself,localize('Import') + ' ' + '2D ' + localize(graphicsName)
                 );
 
+             
+                function loadCostume(name, dir) {
 
-                function loadCostume(name) {
-                    var url = directory + '/' + name,
-                    img = new Image();
+                    if(dir == ""){
+                        var url = directory + '/' + name;
+                    }else{
+                        var url = directory + '/' + dir + '/'  + name
+                    }
+                        
+                        var img = new Image();
+    
+                        img.onload = function () {
+                            var canvas = newCanvas(new Point(img.width, img.height));
+                            canvas.getContext('2d').drawImage(img, 0, 0);
+                            myself.droppedImage(canvas, name, img.src);
+                        };
+                        img.src = url;
+                  
 
-                    img.onload = function () {
-                        var canvas = newCanvas(new Point(img.width, img.height));
-                        canvas.getContext('2d').drawImage(img, 0, 0);
-                        myself.droppedImage(canvas, name, img.src);
-                    };
-                    img.src = url;
                 }
 
-                names.forEach(function (line) {
+                names.forEach(
+                    function (line) {
+ 
                     if (line.length > 0) {
                         libMenu.addItem(
                             line,
-                            function () {loadCostume(line); }
+                            function () {
+                                for(var x in Costumes_2D[line].src)
+                                loadCostume(Costumes_2D[line].src[x], Costumes_2D[line].directory); 
+                            }
                         );
                     }
                 });
+                // loadCostume(names);
                 libMenu.popup(world, pos);
             },
             'Select a 2D costume from the media library'
@@ -2975,12 +2988,14 @@ IDE_Morph.prototype.projectMenu = function () {
 };
 
 IDE_Morph.prototype.getCostumesList = function (dirname) {
+    console.log('costumelist');
     var dir, costumes = [];
 
+    
     dir = this.getURL(dirname);
 
 
-    dir.split('\n').forEach(
+    dir.toString().split('\n').forEach(
         function (line) {
             var startIdx = line.search(new RegExp('href="[^./?].*"', 'i')),
                 endIdx,
@@ -2994,6 +3009,22 @@ IDE_Morph.prototype.getCostumesList = function (dirname) {
             }
         }
     );
+    costumes.sort(function (x, y) {
+        return x < y ? -1 : 1;
+    });
+
+    return costumes;
+};
+
+IDE_Morph.prototype.getCostumesList2D = function () {
+
+    var costumes = [];
+
+    Object.getOwnPropertyNames(Costumes_2D).forEach(
+        function (val) {
+           costumes.push(val);
+        }
+      );
     costumes.sort(function (x, y) {
         return x < y ? -1 : 1;
     });
