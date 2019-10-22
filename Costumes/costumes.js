@@ -23,6 +23,10 @@ var Costumes_2D = {
         "directory": "fourdirections",
         "src": ["head.png","human.png", "kite.png", "medicinewheel.png", "rhombus1.png", "rhombus2.png", "triangle1.png", "triangle2.png", "turtle_island.png", "turtlefoot.png", "turtlehead.png"]
     },
+    "Sports": {
+        "directory" : "sports",
+        "src" : ["motion0.png", "motion1.png","motion2.png","motion3.png","motion4.png"]
+    }
 }
 // let Costumes_2D = {
     
