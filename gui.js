@@ -107,7 +107,7 @@ var Costumes_2D = {
         "directory": "fourdirections",
         "src": ["head.png","human.png", "kite.png", "medicinewheel.png", "rhombus1.png", "rhombus2.png", "triangle1.png", "triangle2.png", "turtle_island.png", "turtlefoot.png", "turtlehead.png"]
     },
-}
+};
 
 // IDE_Morph ///////////////////////////////////////////////////////////
 
