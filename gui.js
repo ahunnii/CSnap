@@ -84,27 +84,27 @@ var JukeboxMorph;
 // Costumes
 var Costumes_2D = {
     "Social Justice Icons": {
-        "directory": "Costumes/socialjustice",
+        "directory": "socialjustice",
         "src": ["breatTheseChains.png","dontShoot.png", "dove.png", "dreads2.png", "fist.png", "heart.png", "hipHop.png", "libertyBell.png", "micHand.png", "peace2.png", "quincunx.png", "scaleOfJustice.png", "write.png"]
     },
     "Anishinaabe": {
-        "directory": "Costumes/anishinaabe",
+        "directory": "anishinaabe",
         "src": ["berry.png","bigpetal.png","bud1.png","flower1.png","flower2.png", "leaf1.png","medicinewheel.png", "petal.png", "petal2.png", "rhombus.png"]
     },
 	"Gee's Bend": {
-        "directory": "Costumes/gees",
+        "directory": "gees",
         "src": ["gb_unit1.png","gb_unit2.png","stripe.png","stripes.png","stripes3.png"]
     },
 	"Lakota": {
-        "directory": "Costumes/lakota",
+        "directory": "lakota",
         "src": ["rhombus.png","rhombus1.png"]
     },
 	"Appalachian": {
-        "directory": "Costumes/appalachian",
+        "directory": "appalachian",
         "src": ["blond.png","green.png", "plaid.png", "rose.png", "white.png"]
     },
 	"Four Directions": {
-        "directory": "Costumes/fourdirections",
+        "directory": "fourdirections",
         "src": ["head.png","human.png", "kite.png", "medicinewheel.png", "rhombus1.png", "rhombus2.png", "triangle1.png", "triangle2.png", "turtle_island.png", "turtlefoot.png", "turtlehead.png"]
     },
 }
